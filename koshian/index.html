@@ -5,22 +5,110 @@
 <title>Test</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<meta name="author" content="‚±‚µ‚ ‚ñ" />
+<meta name="author" content="ã“ã—ã‚ã‚“" />
 <meta name="generator" content="EmEditor" />
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" href="/index.rss" title="RSS 2.0" />
 <link rel="stylesheet" type="text/css" href="./common/css/style.css" />
+
+<!-- blackbird -->
 <link rel="stylesheet" type="text/css" href="./common/js/blackbirdjs/blackbird.css" />
 <script type="text/javascript" src="./common/js/blackbirdjs/blackbird.js"></script>
+
+<!-- html5.js -->
 <!--[if lt IE 9]><script type="text/javascript" src="/common/js/html5.js"></script><![endif]-->
+
+<!-- jQuery -->
 <script type="text/javascript" src="./common/js/jquery-1.4.4.min.js"></script>
+
+<!-- style -->
+<style type="text/css">
+<!--
+#menu-area {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ccc;
+}
+-->
+</style>
+
+<!-- script -->
+<script type="text/javascript">
+//<![CDATA[
+(function($){
+  var menu;
+  $.fn.canvasMenu = function(id, options){
+    if(!menu){
+      menu  = $('<canvas id="canvasMenu" width="300" height="300"></canvas>')
+                .hide()
+                .css({position:'absolute', zIndex:'500'})
+                .appendTo('body')
+                .bind('click',function(e){
+                  e.stopPropagation();
+                });
+    }
+    $(this).bind('contextmenu',function(e){
+      display(e);
+      return  false ;
+    });
+    return  true ;
+  };
+  function display(e){
+    console.log('canvas è¡¨ç¤º'); // log
+    menu.css({
+      'left': e['pageX'],
+      'top': e['pageY']
+    }).show();
+
+    animation();
+
+    $(document).one('click', hide);
+  };
+  function hide(){
+    console.log('canvas éè¡¨ç¤º'); // log
+    menu.hide();
+  };
+  function animation(){
+    console.log('context æç”»'); // log
+    ctx     = menu[0].getContext('2d');
+    rate    = 30;
+
+    boxSize = 100 ;
+    basePos = {
+      x: 0,
+      y: 0
+    };
+    rate    = 30;
+
+    (function(){
+      if(basePos.y > menu[0].height){
+        basePos.y = -boxSize;
+      }
+
+      ctx.clearRect(0, 0, menu[0].width, menu[0].height);
+
+      basePos.y = basePos.y + 3;
+
+      ctx.fillStyle = '#f00';
+      ctx.fillRect(basePos.x, basePos.y, boxSize, boxSize);
+
+      setTimeout(arguments.callee, 1000 / rate);
+    })();
+
+  };
+})(jQuery);
+$(function(){
+  $('#canvasMenu').hide();
+});
+
+$(function(){
+  $('#menu-area').canvasMenu('id','option');
+});
+//]]></script>
 </head>
 <body>
 
-<canvas id='canvas' width="300" height="300"></canvas>
+<div id="menu-area"></div>
 
-<script type="text/javascript">
-//<![CDATA[
-//]]></script>
 </body>
 </html>
